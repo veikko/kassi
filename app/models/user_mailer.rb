@@ -96,12 +96,20 @@ class UserMailer < ActionMailer::Base
   end
   
   def notification_of_new_feedback(feedback, http_request=nil)
-    subject_string = "Uutta palautetta #{APP_CONFIG.production_server}-Kassista k채ytt채j채lt채 #{feedback.author.try(:name)}"
+    subject_string = "Uutta palautetta #{PRODUCTION_SERVER}-Kassista k채ytt채j채lt채 #{feedback.author.try(:name)}"
     url = http_request ? "http://#{http_request.host}#{admin_feedbacks_path}" : "test_url"
     recipients APP_CONFIG.feedback_mailer_recipients
     from       APP_CONFIG.kassi_mail_from_address
     subject    subject_string
     body       :url => url, :feedback => feedback
+  end
+  
+  def invite_new_person(from, to_email, to_name, hash)
+    subject_string = "Sinut on kutsuttu Kassi-k뒁tt둱둲si"
+    recipients to_email
+    from "matti.nelimarkka@gmail.com"
+    subject subject_string
+    body :url => hash, :to_name => to_name, :from => from
   end
 
 end

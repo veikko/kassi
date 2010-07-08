@@ -1,0 +1,10 @@
+<div id='people-invite-a-friend'>
+	
+	<% form_tag( { :controller => "people", :action => "invite_new_user" }, :method => "post" ) do %>
+		<%= hidden_field( :sender, @current_user.id ) %>
+		<%= text_field_tag( :to_name ) %>
+		<%= text_field_tag( :to_email ) %>
+		<%= submit_tag "Send" %>
+	<% end %>
+	
+</div>

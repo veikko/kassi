@@ -119,6 +119,18 @@ class PeopleController < ApplicationController
     session[:cookie] = @session.headers["Cookie"]
     params[:person][:locale] = session[:locale] || 'fi'
     
+    # Handle friend request hash
+    # TODO: after testing, move behind the cos
+    if params[:person][:hash] != nil
+      invite = {
+        :person => "1234",
+        :direction => "Invite going out",
+        ## TODO: using old schema here, remember to change
+        :time => params[:person][:hash]
+      }
+      PersonInvite.new( invite )
+    end
+    
     # Try to create a new person in COS. 
     @person = Person.new
     if params[:person][:password].eql?(params[:person][:password2]) &&
@@ -177,6 +189,17 @@ class PeopleController < ApplicationController
     end
   end
   
+    def invite_new_user
+      hash = rand( 100000000000 )
+      invite = {
+         :person => params['sender'],
+         :direction => "Invite going out",
+         :time => hash
+      }
+      UserMailer.deliver_invite_new_person( params['sender'], params['to_name'], params['to_email'], hash )
+      render :action => "home" and return
+    end
+  
   def cancel_edit
     @person = Person.find(params[:id])
     render :update do |page|
@@ -225,8 +248,6 @@ class PeopleController < ApplicationController
       return message
     end  
   end
-  
-  private
   
   def get_newest_content_items(limit)
     favors = Favor.find(:all, 
