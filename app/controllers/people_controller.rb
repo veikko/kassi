@@ -190,13 +190,16 @@ class PeopleController < ApplicationController
   end
   
     def invite_new_user
+      ## validate presence of email and name...
       hash = rand( 100000000000 )
+      user = Person.find(params[:sender][:value])
       invite = {
-         :person => params['sender'],
+         :person => user.id(),
          :direction => "Invite going out",
          :time => hash
       }
-      UserMailer.deliver_invite_new_person( params['sender'], params['to_name'], params['to_email'], hash )
+      UserMailer.deliver_invite_new_person( user, session[:cookie], params[:to_name], params[:to_email], hash )
+      ## check rendering
       render :action => "home" and return
     end
   

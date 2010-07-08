@@ -104,12 +104,12 @@ class UserMailer < ActionMailer::Base
     body       :url => url, :feedback => feedback
   end
   
-  def invite_new_person(from, to_email, to_name, hash)
+  def invite_new_person(from, cookie, to_name, to_email, hash)
     subject_string = "Sinut on kutsuttu Kassi-kŠyttŠjŠksi"
     recipients to_email
-    from "matti.nelimarkka@gmail.com"
+    from from.email(cookie)
     subject subject_string
-    body :url => hash, :to_name => to_name, :from => from
+    body :url => hash, :to_name => to_name, :sender => from
   end
 
 end
