@@ -4,7 +4,7 @@ class CreatePersonInvites < ActiveRecord::Migration
       t.string :person
       t.string :direction
       t.string :mail
-      t.string :hash
+      t.string :code
 
       t.timestamps
     end

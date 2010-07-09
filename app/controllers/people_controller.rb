@@ -153,7 +153,7 @@ class PeopleController < ApplicationController
       invite = {
         :person => @person.id(),
         :direction => "IN",
-        :hash => params[:person][:hash],
+        :code => params[:person][:hash],
         :mail => ""
       }
       PersonInvite.new( invite )
@@ -191,21 +191,21 @@ class PeopleController < ApplicationController
     end
   end
   
-    def invite_new_user
-      ## validate presence of email and name...
-      hash = rand( 100000000000 )
-      user = Person.find(params[:sender][:value])
-      invite = {
-        :person => user.id(),
-        :direction => "OUT",
-        :hash => hash,
-        :mail => params[:to_email]
-      }
-      PersonInvite.new( invite )
-      UserMailer.deliver_invite_new_person( user, session[:cookie], params[:to_name], params[:to_email], hash )
-      ## check rendering
-      render :action => "home" and return
-    end
+  def invite_new_user
+    ## validate presence of email and name...
+    hash = rand( 100000000000 )
+    user = Person.find(params[:sender][:value])
+    invite = {
+      :person => user.id(),
+      :direction => "OUT",
+      :code => hash,
+      :mail => params[:to_email]
+    }
+    PersonInvite.new( invite )
+    UserMailer.deliver_invite_new_person( user, session[:cookie], params[:to_name], params[:to_email], hash )
+    ## check rendering
+    render :action => "home" and return
+  end
   
   def cancel_edit
     @person = Person.find(params[:id])
