@@ -781,6 +781,9 @@ tarjoamistaan palveluksista. Listaa omasi ja liity Kassin yhteisöön!",
 #Terms
 :terms_title => "Käyttöehdot",
 
+# inviting new user
+:invite => "Lähetä kutsu",
+
 #Smerf
 :smerf_saved_succesfully => "Vastaukset tallennettu onnistuneesti",
 :smerf_no_response_nothing_saved => "Ei vastauksia, mitään ei tallennettu",

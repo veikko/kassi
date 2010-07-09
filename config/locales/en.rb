@@ -780,6 +780,9 @@
 #Terms
 :terms_title => "Terms of Use",
 
+# inviting new user
+:invite => "Send an invite",
+
 #Smerf
 :smerf_saved_succesfully => "Response saved succesfully",
 :smerf_no_response_nothing_saved => "No response found, nothing saved",

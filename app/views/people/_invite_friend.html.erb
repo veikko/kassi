@@ -2,11 +2,11 @@
 	
 	<% form_tag( { :controller => "people", :action => "invite_new_user" }, :method => "post" ) do %>
 		<%= hidden_field( :sender, :value , :value => @current_user.id) %>
-		Nimi: <br/>
+		<%= t('name')%> <br/>
 		<%= text_field_tag( :to_name ) %> <br/>
-		Email <br/>
+		<%= t('email')%> <br/>
 		<%= text_field_tag( :to_email ) %> <br/>
-		<%= submit_tag "Send" %>
+		<%= submit_tag t('invite') %>
 	<% end %>
 	
 </div>
