@@ -118,19 +118,7 @@ class PeopleController < ApplicationController
     @session = Session.create
     session[:cookie] = @session.headers["Cookie"]
     params[:person][:locale] = session[:locale] || 'fi'
-    
-    # Handle friend request hash
-    # TODO: after testing, move behind the cos
-    if params[:person][:hash] != nil
-      invite = {
-        :person => "1234",
-        :direction => "Invite going out",
-        ## TODO: using old schema here, remember to change
-        :time => params[:person][:hash]
-      }
-      PersonInvite.new( invite )
-    end
-    
+
     # Try to create a new person in COS. 
     @person = Person.new
     if params[:person][:password].eql?(params[:person][:password2]) &&
@@ -158,6 +146,20 @@ class PeopleController < ApplicationController
       preserve_create_form_values(@person)
       render :action => "new" and return
     end
+    
+        # Handle friend request hash
+    # TODO: after testing, move behind the cos
+    if params[:person][:hash] != nil
+      invite = {
+        :person => @person.id(),
+        :direction => "IN",
+        :hash => params[:person][:hash],
+        :mail => ""
+      }
+      PersonInvite.new( invite )
+    end
+    
+    
   end  
   
   # Displays register form
@@ -194,10 +196,12 @@ class PeopleController < ApplicationController
       hash = rand( 100000000000 )
       user = Person.find(params[:sender][:value])
       invite = {
-         :person => user.id(),
-         :direction => "Invite going out",
-         :time => hash
+        :person => user.id(),
+        :direction => "OUT",
+        :hash => hash,
+        :mail => params[:to_email]
       }
+      PersonInvite.new( invite )
       UserMailer.deliver_invite_new_person( user, session[:cookie], params[:to_name], params[:to_email], hash )
       ## check rendering
       render :action => "home" and return
