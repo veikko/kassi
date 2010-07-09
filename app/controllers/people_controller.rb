@@ -156,7 +156,7 @@ class PeopleController < ApplicationController
         :code => params[:person][:hash],
         :mail => ""
       }
-      PersonInvite.new( invite )
+      PersonInvite.create( invite )
     end
     
     
@@ -201,7 +201,7 @@ class PeopleController < ApplicationController
       :code => hash,
       :mail => params[:to_email]
     }
-    PersonInvite.new( invite )
+    PersonInvite.create( invite )
     UserMailer.deliver_invite_new_person( user, session[:cookie], params[:to_name], params[:to_email], hash )
     ## check rendering
     render :action => "home" and return
